@@ -1,3 +1,5 @@
+@extends('Students.layout')
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -66,18 +68,11 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
-                 Data of students
+                 Data of Students
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{route('Students.index')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>view data of students </p>
-                </a>
-              </li>
-            </ul>
+           
             <ul class="nav nav-treeview">
                 <li class="nav-item">
                   <a href="{{route('Students.create')}}" class="nav-link">
@@ -97,10 +92,11 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-   
+    
 
     <!-- Main content -->
     <section class="content">
+      @section('content')
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
@@ -110,13 +106,13 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="example2" class="table table-bordered table-hover">
+                <table id="dataofstudent" class="table table-bordered table-hover">
                   <thead>
                   <tr>
                     <th>ID </th>
                     <th>Name of stdent </th>
-                    <th>Class ID</th>
-                    <th>Country ID </th>
+                    <th>Class Name </th>
+                    <th>Country Name </th>
                     <th> Date of birth  </th>
                     <th> action  </th>
                   </tr>
@@ -127,18 +123,15 @@
 
                         <td>{{ $data->id}}</td>
                         <td>{{ $data->name}}</td>
-                        <td>{{ $data->country_id}}</td>
-                        <td>{{ $data->class_id}}</td>
+                        <td>{{ $data->Classes->class_name}}</td>
+                        <td>{{ $data->Country->name}}</td>
                         <td>{{ $data->date_of_birth}}</td>
                         <td>
-                            <form action="Students.destroy" method="POST">
-               
+                            <form action="{{route('Students.destroy',$data->id)}}" method="POST">
+                                <a class="btn btn-primary" href="{{route('Students.edit',$data->id)}}">Edit</a>
                                 
-                                <a class="btn btn-primary" >Edit</a>
-               
                                 @csrf
                                 @method('DELETE')
-                  
                                 <button type="submit" class="btn btn-danger">Delete</button>
                             </form>
 
@@ -149,6 +142,58 @@
                   </tbody>
                   
                 </table>
+                <h3>Number of Students in each class</h3>
+                <table id="NOStudentInClass" class="table table-bordered table-hover">
+                  <thead>
+                  <tr>
+                    <th> Class Name </th>
+                    <th>Number of Student in class </th>
+                   
+                    
+                  </tr>
+                  </thead>
+                  <tbody>
+                    @foreach($NOStudentInClass as $data)
+                    <tr>
+
+                        <td>{{ $data->class_name}}</td>
+                        <td>{{ $data->Student->count() }}</td>
+                    
+                        
+                        
+                       
+                    </tr>   @endforeach
+                  </tbody>
+                  
+                </table>
+                <h3>Number of Students in each Country</h3>
+                <table id="NOStudentInCountry" class="table table-bordered table-hover">
+                  <thead>
+                  <tr>
+                    <th>Country Name </th>
+                    <th>Number of Student in Country< </th>
+                   
+                    
+                  </tr>
+                  </thead>
+                  <tbody>
+                    @foreach($NOStudentInCountry as $data)
+                    <tr>
+
+                        <td>{{ $data->name}}</td>
+                        <td>{{ $data->Student->count() }}</td>
+                    
+                        
+                        
+                       
+                    </tr>   @endforeach
+                  </tbody>
+                  
+                </table>
+              
+               
+
+
               </div>
               <!-- /.card-body -->
             </div>
@@ -202,7 +247,25 @@
 <!-- Page specific script -->
 <script>
   $(function () {
-    $('#example2').DataTable({
+    $('#dataofstudent').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+    $('#NOStudentInClass').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+    $('#NOStudentInCountry').DataTable({
       "paging": true,
       "lengthChange": false,
       "searching": false,
@@ -213,5 +276,8 @@
     });
   });
 </script>
+@endsection
 </body>
+
 </html>
+

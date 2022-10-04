@@ -9,11 +9,17 @@ class Classes extends Model
 {
 
     public function Student() {
-        return $this->hasMany('Student', 'class_id');
+        return $this->hasMany(Student::class, 'class_id');
+        
     }
+       
+    
+    
     use HasFactory;
+    public $table='classes';
+    protected $primaryKey ='class_id';
     protected $fillable = [
-        'class_name',
+        'name',
       
     ];
 }

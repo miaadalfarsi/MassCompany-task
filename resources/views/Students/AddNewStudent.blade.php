@@ -1,3 +1,5 @@
+@extends('Students.layout')
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -90,9 +92,10 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
- 
+  
          <!-- Main content -->
     <section class="content">
+      @section('content')
         <div class="container-fluid">
           <div class="row">
             <!-- left column -->
@@ -102,10 +105,16 @@
                 <div class="card-header">
                   <h3 class="card-title">ADD NEW DATA OF NEW STUDENT </h3>
                 </div>
+                @if ($message = Session::get('success'))
+                <div class="alert alert-success">
+                    <p>{{ $message }}</p>
+                </div>
+                @endif
+        
                 <!-- /.card-header -->
                 <!-- form start -->
                 <form action= "{{route('Students.store')}}" method="POST"  enctype="multipart/form-data">
-                    @csrf
+                    @csrf 
                   <div class="card-body">
                     <div class="mt-5">
                         <label>Name </label>
@@ -115,29 +124,32 @@
                         @enderror
 
                     </div>
-                    <div class="mt-5">
-                    <label>Class Name </label>
-                    <input type="number" id="class_id" name="price" class="input w-full border mt-2" placeholder="class_id"  value="{{old('class_id')}}"  >
-                    @error('price')
-                    <small class="text-danger">{{$message}}</small>
-                    @enderror
-                    </div>
-                    <div class="mt-5">
-                        <label>Country Name</label>
-                        <input type="number" id="country_id" name="country_id" class="input w-full border mt-2" placeholder="country_id " value="{{old('country_id')}}" >
-                        @error('start_date')
-                        <small class="text-danger">{{$message}}</small>
-                        @enderror
-                    </div>
+                        <div class="form-group">
+                          <label>Class Name:</label>
+                          <select name="class_id"  class="form-control" placeholder="Class Name">
+                              @foreach($Student_data as $classes)
+                              <option value="{{$classes->class_id}}">{{$classes->Classes->class_name}}</option>
+                              @endforeach
+                          </select>
+                      </div>
+          
+          
+                      <div class="form-group">
+                          <label>Country Name:</label>
+                          <select name="country_id"  class="form-control" placeholder="Country Name">
+                              @foreach($Student_data as $country)
+                              <option value="{{$country->country_id}}">{{$country->Country->name}}</option>
+                              @endforeach
+                          </select>
+                      </div> 
+          
+          
                     <div class="mt-5">
                         <label>Date Of Birth</label>
                         <input type="date" id="date_of_birth" name="date_of_birth" class="input w-full border mt-2" placeholder="date_of_birth" value="{{old('date_of_birth')}}" >
-                        @error('end_date')
-                        <small class="text-danger">{{$message}}</small>
-                        @enderror
                     </div>
                   </div>
-                </form>
+                
                        <!-- /.card-body -->
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary">Submit</button>
@@ -176,6 +188,6 @@
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
 
-
+@endsection
 </body>
 </html>
